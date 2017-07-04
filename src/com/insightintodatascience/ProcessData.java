@@ -185,7 +185,7 @@ public class ProcessData {
 			    	
 			    	// detect if this purchase is anomaly
 			    	// element is user id
-			    	Set<Integer> network = getNetwork(pch, allPeopleMap, D, T);
+			    	Set<Integer> network = getNetwork(pch, allPeopleMap, D);
 			    	
 			    	// proceed the calculations
 			    	if (network.size() >= 2) {
@@ -287,7 +287,7 @@ public class ProcessData {
 	}
 	
 	// get network within D degree for a person of id in pch
-	private static Set<Integer> getNetwork(Purchase pch, Map<Integer, Person> allPeopleMap, int D, int T) {
+	private static Set<Integer> getNetwork(Purchase pch, Map<Integer, Person> allPeopleMap, int D) {
 		
 		int id = pch.getId();
 		Set<Integer> checkedID = new HashSet<Integer>();
