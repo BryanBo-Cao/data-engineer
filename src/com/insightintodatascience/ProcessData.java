@@ -1,3 +1,6 @@
+/*
+ * Author: github.com/BryanBo-Cao
+ */
 package com.insightintodatascience;
 
 import java.io.BufferedReader;
@@ -23,12 +26,14 @@ public class ProcessData {
 	public static void main(String[] args) {
 		
 		// specify your parameters here
-		String batch_logAddress = "./src/com/insightintodatascience/log_input/batch_log.json",
-			stream_logAddress = "./src/com/insightintodatascience/log_input/stream_log.json",
-			flagged_logAddress = "./src/com/insightintodatascience/log_output/flagged_purchases.json";
-//		String batch_logAddress = "./log_input/batch_log.json",
-//					stream_logAddress = "./log_input/stream_log.json",
-//			flagged_logAddress = "./log_output/flagged_purchases.json";
+		int D = 0, T = 0;
+		
+//		String batch_logAddress = "./src/com/insightintodatascience/log_input/batch_log.json",
+//			stream_logAddress = "./src/com/insightintodatascience/log_input/stream_log.json",
+//			flagged_logAddress = "./src/com/insightintodatascience/log_output/flagged_purchases.json";
+		String batch_logAddress = "./log_input/batch_log.json",
+					stream_logAddress = "./log_input/stream_log.json",
+			flagged_logAddress = "./log_output/flagged_purchases.json";
 			
 		File outputFile = new File(flagged_logAddress);
 		PrintWriter writer = null;
@@ -46,8 +51,6 @@ public class ProcessData {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
-		int D = 0, T = 0;
 		
 		// record purchases, keys are user ids, values Purchases that the user made 
 		Map<Integer, Queue<Purchase>> purMap = new HashMap<Integer, Queue<Purchase>>();
