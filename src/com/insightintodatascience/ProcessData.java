@@ -23,12 +23,12 @@ public class ProcessData {
 	public static void main(String[] args) {
 		
 		// specify your parameters here
-//		String batch_logAddress = "./src/com/insightintodatascience/log_input/batch_log.json",
-//			stream_logAddress = "./src/com/insightintodatascience/log_input/stream_log.json",
-//			flagged_logAddress = "./src/com/insightintodatascience/log_output/flagged_purchases.json";
-		String batch_logAddress = "./log_input/batch_log.json",
-					stream_logAddress = "./log_input/stream_log.json",
-			flagged_logAddress = "./log_output/flagged_purchases.json";
+		String batch_logAddress = "./src/com/insightintodatascience/log_input/batch_log.json",
+			stream_logAddress = "./src/com/insightintodatascience/log_input/stream_log.json",
+			flagged_logAddress = "./src/com/insightintodatascience/log_output/flagged_purchases.json";
+//		String batch_logAddress = "./log_input/batch_log.json",
+//					stream_logAddress = "./log_input/stream_log.json",
+//			flagged_logAddress = "./log_output/flagged_purchases.json";
 			
 		File outputFile = new File(flagged_logAddress);
 		PrintWriter writer = null;
@@ -295,6 +295,8 @@ public class ProcessData {
 	// get network recursively
 	private static Set<Integer> getNetwork(Integer id, Map<Integer, Person> allPeopleMap, 
 			Set<Integer> checkedID, int D) {
+		System.out.println("checkedID.size(): " + checkedID.size());
+		System.out.println("D: " + D);
 		checkedID.add(id);
 		Set<Integer> myNetwork = allPeopleMap.get(id).getFriends();
 		Iterator<Integer> it = myNetwork.iterator();
@@ -302,7 +304,7 @@ public class ProcessData {
 			int next = it.next();
 			if (!checkedID.contains(next)) {
 				checkedID.add(next);
-				myNetwork.addAll(getNetwork(next, allPeopleMap, checkedID, D - 1));
+				if (D >= 1) myNetwork.addAll(getNetwork(next, allPeopleMap, checkedID, D - 1));
 			}
 		}
 		return myNetwork;
