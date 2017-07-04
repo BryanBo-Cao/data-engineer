@@ -130,13 +130,14 @@ public class ProcessData {
 					    	
 					    	allPeopleMap.get(id1).getFriends().add(id2);
 					    	allPeopleMap.get(id2).getFriends().add(id1);
-					    	
 //			    			System.out.println("befriend");
 			    			
 			    		} else if (line.contains("unfriend")) {
 			    			
-			    			allPeopleMap.get(id1).getFriends().remove(id2);
-					    	allPeopleMap.get(id2).getFriends().remove(id1);
+			    			if (allPeopleMap.get(id1).getFriends().contains(id2))
+			    				allPeopleMap.get(id1).getFriends().remove(id2);
+			    			if (allPeopleMap.get(id2).getFriends().contains(id1))
+			    				allPeopleMap.get(id2).getFriends().remove(id1);
 //			    			System.out.println("unfriend");
 			    		}
 		    				
@@ -182,6 +183,7 @@ public class ProcessData {
 			    	// detect if this purchase is anomaly
 			    	// element is user id
 			    	Set<Integer> network = getNetwork(pch, allPeopleMap, D, T);
+			    	System.out.println(network.size());
 			    	
 			    	// proceed the calculations
 			    	if (network.size() >= 2) {
@@ -202,6 +204,7 @@ public class ProcessData {
 			    		
 			    		// mean
 			    		double mean = sumAmount / network.size();
+			    		System.out.println(mean);
 			    		
 			    		// sd
 			    		double sumAmountDiff2 = 0;
@@ -214,6 +217,8 @@ public class ProcessData {
 			    			}
 			    		}
 			    		double sd = Math.sqrt(sumAmountDiff2 / network.size());
+			    		
+			    		System.out.println(sd);
 			    		
 			    		if (amount > mean + 3 * sd) {
 			    			writer.append(line + "\n");
@@ -239,17 +244,17 @@ public class ProcessData {
 	    			
 //	    			System.out.println(id + " " + timestamp + " " + amount);
 	    			
-	    		} else {
+	    		} else if (line.length() > 0){
 	    			// set ids
 	    			startIndex = line.indexOf("id1") + 7;
 			    	endIndex = line.indexOf(",", startIndex) - 1;
 			    	int id1 = Integer.valueOf(line.substring(startIndex , endIndex));
-			    	System.out.println(id1);
+//			    	System.out.println(id1);
 			    	
 			    	startIndex = line.indexOf("id2") + 7;
 			    	endIndex = line.indexOf("}", startIndex) - 1;
 			    	int id2 = Integer.valueOf(line.substring(startIndex , endIndex));
-			    	System.out.println(id2);
+//			    	System.out.println(id2);
 	    			
 			    	if (!allPeopleMap.containsKey(id1)) allPeopleMap.put(id1, new Person(id1));
 			    	if (!allPeopleMap.containsKey(id2)) allPeopleMap.put(id2, new Person(id2));
@@ -258,14 +263,14 @@ public class ProcessData {
 				    	
 				    	allPeopleMap.get(id1).getFriends().add(id2);
 				    	allPeopleMap.get(id2).getFriends().add(id1);
-				    	
 //		    			System.out.println("befriend");
 		    			
 		    		} else if (line.contains("unfriend")) {
 		    			
-		    			allPeopleMap.get(id1).getFriends().remove(id2);
-				    	allPeopleMap.get(id2).getFriends().remove(id1);
-		    			
+		    			if (allPeopleMap.get(id1).getFriends().contains(id2))
+		    				allPeopleMap.get(id1).getFriends().remove(id2);
+		    			if (allPeopleMap.get(id2).getFriends().contains(id1))
+		    				allPeopleMap.get(id2).getFriends().remove(id1);
 //		    			System.out.println("unfriend");
 		    			
 		    		}
@@ -279,7 +284,7 @@ public class ProcessData {
 		}
 		writer.flush();
 		writer.close();
-
+		System.out.println("Done! See the flagged_purchases.json file in ./log_output!");
 	}
 	
 	// get network within D degree for a person of id in pch
@@ -295,16 +300,16 @@ public class ProcessData {
 	// get network recursively
 	private static Set<Integer> getNetwork(Integer id, Map<Integer, Person> allPeopleMap, 
 			Set<Integer> checkedID, int D) {
-		System.out.println("checkedID.size(): " + checkedID.size());
-		System.out.println("D: " + D);
 		checkedID.add(id);
 		Set<Integer> myNetwork = allPeopleMap.get(id).getFriends();
 		Iterator<Integer> it = myNetwork.iterator();
 		while (it.hasNext()) {
 			int next = it.next();
+			it.remove();
 			if (!checkedID.contains(next)) {
 				checkedID.add(next);
-				if (D >= 1) myNetwork.addAll(getNetwork(next, allPeopleMap, checkedID, D - 1));
+				if (D > 1)
+					myNetwork.addAll(getNetwork(next, allPeopleMap, checkedID, D - 1));
 			}
 		}
 		return myNetwork;
