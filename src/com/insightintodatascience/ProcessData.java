@@ -183,7 +183,6 @@ public class ProcessData {
 			    	// detect if this purchase is anomaly
 			    	// element is user id
 			    	Set<Integer> network = getNetwork(pch, allPeopleMap, D, T);
-			    	System.out.println(network.size());
 			    	
 			    	// proceed the calculations
 			    	if (network.size() >= 2) {
@@ -204,7 +203,6 @@ public class ProcessData {
 			    		
 			    		// mean
 			    		double mean = sumAmount / network.size();
-			    		System.out.println(mean);
 			    		
 			    		// sd
 			    		double sumAmountDiff2 = 0;
@@ -217,8 +215,6 @@ public class ProcessData {
 			    			}
 			    		}
 			    		double sd = Math.sqrt(sumAmountDiff2 / network.size());
-			    		
-			    		System.out.println(sd);
 			    		
 			    		if (amount > mean + 3 * sd) {
 			    			writer.append(line + "\n");
@@ -292,9 +288,7 @@ public class ProcessData {
 		
 		int id = pch.getId();
 		Set<Integer> checkedID = new HashSet<Integer>();
-		Set<Integer> myNetwork = getNetwork(id, allPeopleMap, checkedID, D);
-		
-		return myNetwork;
+		return getNetwork(id, allPeopleMap, checkedID, D);
 	}
 	
 	// get network recursively
@@ -303,15 +297,24 @@ public class ProcessData {
 		checkedID.add(id);
 		Set<Integer> myNetwork = allPeopleMap.get(id).getFriends();
 		Iterator<Integer> it = myNetwork.iterator();
+
+		int[] currentFriends = new int[myNetwork.size()];
+		int i = 0;
 		while (it.hasNext()) {
 			int next = it.next();
-			it.remove();
 			if (!checkedID.contains(next)) {
 				checkedID.add(next);
-				if (D > 1)
-					myNetwork.addAll(getNetwork(next, allPeopleMap, checkedID, D - 1));
+				currentFriends[i] = next;
 			}
 		}
+		
+		if (D > 0) {
+			for (int ii = 0; ii < currentFriends.length; ii++) {
+				if (!checkedID.contains(currentFriends[i]))
+					myNetwork.addAll(getNetwork(currentFriends[i], allPeopleMap, checkedID, D - 1));
+			}
+		}
+			
 		return myNetwork;
 	}
 
