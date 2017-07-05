@@ -4,6 +4,7 @@
 3. [Data Structure](README.md#data-structure)
 4. [Dataset](README.md#dataset)
 5. [Algorithm](README.md#algorithm)
+6. [Environment](README.md#environment)
 
 # To Run
 
@@ -121,10 +122,27 @@ When the program detects a record from the streaming is "befriend", it will firs
 ### Unfriend
 When the program detects a record from the streaming is "unfriend", it will first check if 'allPeopleMap' save both of the customers. If not, both will be put into 'allPeopleMap' with 'id -> person'. After that each one will be removed from the other person's 'Set<Integer> friends'.
 
-### private static Set<Integer> getNetwork(Purchase pch, Map<Integer, Person> allPeopleMap, int D)
-### private static Set<Integer> getNetwork(Integer id, Map<Integer, Person> allPeopleMap, Set<Integer> checkedID, int D)
-This method will return a set of friends' ids within 'D' degree from a person whose id is 'id', and call 'private static Set<Integer> getNetwork(Integer id, Map<Integer, Person> allPeopleMap, Set<Integer> checkedID, int D)' recursively to add friends with the degree of 'D - 1', until 'D == 0'. A set of 'checkedID' is used to keep track of traversed customers. In each round, for example a customer with 'id', at first this id and all his/her friends' ids will be added into 'checkedID'. 'int[] currentFriends = new int[myNetwork.size()];' is used to store current customer's friends. If the current value of 'D' is greater than 0, it will go through the array of 'currentFriends', 'getNetwork(currentFriends[i], allPeopleMap, checkedID, D - 1)' and add all the elements returned from this method recursively.
+`private static Set<Integer> getNetwork(Purchase pch, Map<Integer, Person> allPeopleMap, int D)`
+
+`private static Set<Integer> getNetwork(Integer id, Map<Integer, Person> allPeopleMap, Set<Integer> checkedID, int D)`
+
+This method will return a set of friends' ids within 'D' degree from a person whose id is 'id', and call `private static Set<Integer> getNetwork(Integer id, Map<Integer, Person> allPeopleMap, Set<Integer> checkedID, int D)` recursively to add friends with the degree of 'D - 1', until 'D == 0'. A set of 'checkedID' is used to keep track of traversed customers. In each round, for example a customer with 'id', at first this id and all his/her friends' ids will be added into 'checkedID'. `int[] currentFriends = new int[myNetwork.size()]` is used to store current customer's friends. If the current value of 'D' is greater than 0, it will go through the array of 'currentFriends', `getNetwork(currentFriends[i], allPeopleMap, checkedID, D - 1)` and add all the elements returned from this method recursively.
 
 
 ### Calculations
 When we updated the models after receiving a record from stream log, we check if the size of network of the current customer. If this number is no greater than 2, we do nothing; Otherwise we calculate 'mean' and 'sd', and append this purchase into the output file if the condition of (amount > mean + 3 * sd) is true.
+
+# Environment
+This code was developed on
+
+Java
+```
+java version "1.8.0_112"
+Java(TM) SE Runtime Environment (build 1.8.0_112-b16)
+Java HotSpot(TM) 64-Bit Server VM (build 25.112-b16, mixed mode)
+```
+
+macOS Sierra
+```
+Version 10.12.5
+```
