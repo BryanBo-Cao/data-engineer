@@ -190,23 +190,20 @@ public class ProcessData {
 			    		}
 			    		
 			    		// mean
-			    		double mean = sumAmount / network.size();
+			    		double mean = sumAmount / T;
 			    		
 			    		// sd
 			    		double sumAmountDiff2 = 0;
-			    		for (int i = 0; i < lastTPurchases.size() && cnt > 0; i++) {
+			    		for (int i = 0; i < lastTPurchases.size(); i++) {
 			    			Purchase phcInLastTPurchases = lastTPurchases.get(i);
-			    			if (network.contains(phcInLastTPurchases.getId())) {
-			    				double diff = phcInLastTPurchases.getAmount() - mean;
-			    				sumAmountDiff2 += diff * diff ;
-			    				cnt--;
-			    			}
+			    			double diff = phcInLastTPurchases.getAmount() - mean;
+		    				sumAmountDiff2 += diff * diff ;
+		    				
 			    		}
-			    		double sd = Math.sqrt(sumAmountDiff2 / network.size());
+			    		double sd = Math.sqrt(sumAmountDiff2 / T);
 			    		
-			    		if (amount > mean + 3 * sd) {
+			    		if (amount > mean + 3 * sd)
 			    			writer.append(line + "\n");
-			    		}
 			    	}
 			    	
 	    			if (purMap.containsKey(id)) {
