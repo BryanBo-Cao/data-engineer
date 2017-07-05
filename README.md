@@ -16,7 +16,7 @@ When it's finished, you will see it printing "Done! See the flagged_purchases.js
 This code starts at the main() in ProcessData class.
 
 ### Repo Directory Structure
-
+```
 ├── README.md
 ├── run.sh
 ├── src
@@ -35,7 +35,7 @@ This code starts at the main() in ProcessData class.
         └── Person.class
         └── ProcessData.class
         └── Purchase.class
-
+```
 # Data Structure
 ### Person
 Each person has id, and a set of friends, which stores his/her friends id.

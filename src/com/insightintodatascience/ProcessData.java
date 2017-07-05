@@ -3,23 +3,8 @@
  */
 package com.insightintodatascience;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
-import java.util.Set;
+import java.io.*;
+import java.util.*;
 
 public class ProcessData {
 
@@ -195,7 +180,7 @@ public class ProcessData {
 			    		
 			    		int cnt = T;
 			    		double sumAmount = 0;
-			    		for (int i = purchaseStream.size() - 1; i >= 0 && cnt >= 0; i--) {
+			    		for (int i = purchaseStream.size() - 1; i >= 0 && cnt > 0; i--) {
 			    			Purchase pchInStream = purchaseStream.get(i);
 			    			if (network.contains(pchInStream.getId())) {
 			    				sumAmount += pchInStream.getAmount();
@@ -209,7 +194,7 @@ public class ProcessData {
 			    		
 			    		// sd
 			    		double sumAmountDiff2 = 0;
-			    		for (int i = 0; i < lastTPurchases.size() && cnt >= 0; i++) {
+			    		for (int i = 0; i < lastTPurchases.size() && cnt > 0; i++) {
 			    			Purchase phcInLastTPurchases = lastTPurchases.get(i);
 			    			if (network.contains(phcInLastTPurchases.getId())) {
 			    				double diff = phcInLastTPurchases.getAmount() - mean;
@@ -292,6 +277,7 @@ public class ProcessData {
 		int id = pch.getId();
 		Set<Integer> checkedID = new HashSet<Integer>();
 		return getNetwork(id, allPeopleMap, checkedID, D);
+		
 	}
 	
 	// get network recursively
