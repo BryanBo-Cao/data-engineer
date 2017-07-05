@@ -17,8 +17,8 @@ public class ProcessData {
 //			stream_logAddress = "./src/com/insightintodatascience/log_input/stream_log.json",
 //			flagged_logAddress = "./src/com/insightintodatascience/log_output/flagged_purchases.json";
 		String batch_logAddress = "./log_input/batch_log.json",
-					stream_logAddress = "./log_input/stream_log.json",
-			flagged_logAddress = "./log_output/flagged_purchases.json";
+				stream_logAddress = "./log_input/stream_log.json",
+				flagged_logAddress = "./log_output/flagged_purchases.json";
 			
 		File outputFile = new File(flagged_logAddress);
 		PrintWriter writer = null;
@@ -190,7 +190,7 @@ public class ProcessData {
 			    		}
 			    		
 			    		// mean
-			    		double mean = sumAmount / T;
+			    		double mean = sumAmount / (T - cnt);
 			    		
 			    		// sd
 			    		double sumAmountDiff2 = 0;
@@ -200,7 +200,7 @@ public class ProcessData {
 		    				sumAmountDiff2 += diff * diff ;
 		    				
 			    		}
-			    		double sd = Math.sqrt(sumAmountDiff2 / T);
+			    		double sd = Math.sqrt(sumAmountDiff2 / (T - cnt));
 			    		
 			    		if (amount > mean + 3 * sd)
 			    			writer.append(line + "\n");
